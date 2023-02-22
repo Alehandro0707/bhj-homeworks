@@ -1,15 +1,21 @@
-let modalMain = document.getElementById('modal_main');
-let modalClose = Array.from(document.getElementsByClassName('modal__close'));
-let showSuccess = document.querySelector('.show-success');
-let modalSuccess = document.getElementById('modal_success');
+const mainModal = document.getElementById("modal_main");
+const successModal = document.getElementById("modal_success");
 
-modalMain.classList.add('modal_active');
-
-modalClose.forEach(item => item.onclick = function() {
-    modalMain.classList.remove('modal_active');
-    modalSuccess.classList.remove('modal_active');
+document.addEventListener("DOMContentLoaded", function(event) {
+    mainModal.classList.add('modal_active');
 });
 
-showSuccess.onclick = function() {
-    modalSuccess.classList.add('modal_active');
-};
+const close = Array.from(document.getElementsByClassName("modal__close"));
+const success = Array.from(document.getElementsByClassName("show-success"));
+
+function closePopup() {
+    this.closest(".modal_active").classList.remove("modal_active");
+}
+
+function successPopup() {
+    mainModal.onclick = closePopup;
+    successModal.classList.add('modal_active');
+}
+
+close.forEach(popup => popup.onclick = closePopup);
+success.forEach(popup => popup.onclick = successPopup);
