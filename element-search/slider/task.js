@@ -1,25 +1,21 @@
-let sliderItem = Array.from(document.querySelectorAll('.slider__item'));
-let sliderArrows = Array.from(document.querySelectorAll('.slider__arrow'));
-let currentIndex = 0;
+const arrowPrev = document.querySelector(".slider__arrow_prev");
+const arrowNext = document.querySelector(".slider__arrow_next");
 
-let showCurrent = function(index) {
-    sliderItem.forEach(item => item.classList.remove('slider__item_active'));
-    sliderItem[index].classList.add('slider__item_active');
-};
+arrowPrev.onclick = slide;
+arrowNext.onclick = slide;
 
-sliderArrows.forEach(item => item.addEventListener('click', function() {
-    if (item.classList.contains('slider__arrow_next')) {
-        if (currentIndex >= sliderItem.length - 1) {
-            currentIndex = 0;
-        } else {
-            currentIndex++;
-        }
-    } else {
-        if (currentIndex <= 0) {
-            currentIndex = sliderItem.length - 1;
-        } else {
-            currentIndex--;
-        }
+function slide() {
+    const navNext = this.className.includes("next") ? 1 : -1;
+    const items = Array.from(document.getElementsByClassName("slider__item"));
+    const activeItem = document.querySelector(".slider__item_active");
+    const itemIndex = items.findIndex(item => item === activeItem);
+    let index = itemIndex + navNext;
+    activeItem.className = "slider__item";
+
+    if (index < 0) {
+        index = items.length - 1;
+    } else if (index > items.length - 1) {
+        index = 0;
     }
-    showCurrent(currentIndex);
-}));
+    items[index].className += " slider__item_active";
+}
