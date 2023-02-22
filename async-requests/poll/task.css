@@ -9,3 +9,9 @@ body {
 .poll__title {
   margin-bottom: 20px;
 }
+
+button {
+  color: #000;
+  background-color: #fff;
+  border: 1px solid;
+}
