@@ -1,45 +1,53 @@
-const chatWidgetSide = document.querySelector('.chat-widget__side');
-const chatWidget = document.querySelector('.chat-widget');
-const chatWidgetInput = document.getElementById('chat-widget__input');
-const messages = document.querySelector( '.chat-widget__messages' );
+let chat = document.querySelector('div.chat-widget');
 
-// Объявляем массив с ответами робота
-let randomMessage = [
-    'Вы не купили ни одного товара для того, чтобы так с нами разговаривать!',
-    'Добрый день! До свидания!', 
-    'Кто тут?', 
-    'Где ваша совесть?',
-    'Мы ничего не будем вам продавать',
-    'К сожалению, все операторы сейчас заняты. Не пишите нам больше'
-];
-
-// Функция, которая возвращает случайный ответ робота
-let showRandom = function() {
-    return randomMessage[Math.round(Math.random()) * (randomMessage.length - 1)];
+let openChat = () => {
+    chat.classList.add('chat-widget_active')
 };
+chat.addEventListener('click', openChat);
 
-chatWidgetSide.addEventListener('click', function() {
-    chatWidget.classList.add('chat-widget_active');
-});
+const input = document.querySelector('input.chat-widget__input');
 
-// Функция по добавлению сообщения в чат
-let addMessage = function(message, type) {
-    let date = new Date().toLocaleTimeString().substring(0,5);
-    let template = `
-    <div class="message ${type}">
-    <div class="message__time">${date}</div>
-    <div class="message__text">${message}</div>
-    </div>
-    `;
+console.log(input.value);
 
-    messages.innerHTML += template;
-};
+input.addEventListener('keyup', event => {
+    event.preventDefault();
+    
+    if ((13 == event.keyCode)) {
+        let value = input.value.trim();
+        if (value === '') {
+            alert('нельзя отправить пустое сообщение');
+        } else {
+            let now = new Date();
+            let time = now.getHours() + ':' + now.getMinutes();
+            const messages = document.querySelector( '.chat-widget__messages' );
+            messages.innerHTML += `
+              <div class="message_client">
+                <div class="message__time">` + time + `</div>
+                <div class="message__text">` +
+                  value
+                + `</div>
+              </div>
+            `;
 
-// Отслеживаем нажатие клавиш в окне чата
-chatWidgetInput.addEventListener('keypress', function(evt) {
-    if ((evt.key === 'Enter') && (chatWidgetInput.value)) {
-        addMessage(chatWidgetInput.value, 'message_client');
-        chatWidgetInput.value = null;
-        addMessage(showRandom(), '');
+            input.value = '';
+            setTimeout( () => {
+              answer = [
+                'Добрый день! До свидания!',
+                'Убирайтесь',
+                'Кто тут?',
+                'Мы ничего не будем вам продавать!',
+                'Где ваша совесть?!'
+            ];
+              rnd = Math.floor(Math.random() * 5);
+              messages.innerHTML += `
+              <div class="message">
+                <div class="message__time">` + time + `</div>
+                <div class="message__text">` +
+                  answer[rnd]
+                + `</div>
+              </div>
+            `;
+            }, 1000);
+        }
     }
 });
